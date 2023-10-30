@@ -1,6 +1,7 @@
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import * as path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
@@ -12,4 +13,5 @@ export default defineConfig({
         }),
         tsconfigPaths(),
     ],
+    envDir: path.resolve(__dirname, 'config/env'),
 })
