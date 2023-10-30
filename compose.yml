@@ -1,0 +1,23 @@
+services:
+  llm-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - memcached
+  memcached:
+    image: memcached:alpine
+    ports:
+      - 11211:11211
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 5173:5173
+    # depends_on:
+    #   - llm-api
