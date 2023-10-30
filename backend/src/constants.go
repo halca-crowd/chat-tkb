@@ -2,11 +2,15 @@ package main
 
 import "fmt"
 
+// Preset Response
+var FatalErrorResponse = []byte(`{"action":"ERROR_MESSAGE","code":503,"msg":"failed to make erorr obj and occured fatal error in the server","name":"fatal error"}`)
+var SystemResponse = []byte(`{"action":"SYSTEM_MESSAGE","status":"OK","error": false}`)
+
 // 環境変数の名前
-const API_PORT_VARIABLE_NAME = "LLM_API_PORT"          // APIを公開するポートを指定する環境変数の名前
-const API_TOKEN_ENV_NAME_OPENAI = "OPENAI_API_TOKEN"   // OpenAIのAPIのトークンを指定する環境変数の名前
-const LOG_INFO_ENV_NAME = "LOGGING_INFO"               // Infoレベルのログを出力するか否かを指定する環境変数の名前（空文字列なら出力しない）
-const STREAM_MAX_TOKENS_ENV_NAME = "STREAM_MAX_TOKENS" // デコーダモデルにEOFが出力されるまでの最大トークン数を指定する環境変数の名前
+const API_PORT_VARIABLE_NAME = "LLM_API_PORT"           // APIを公開するポートを指定する環境変数の名前
+const API_TOKEN_ENV_NAME_OPENAI = "OPENAI_API_TOKEN"    // OpenAIのAPIのトークンを指定する環境変数の名前
+const LOG_INFO_ENV_NAME = "LOGGING_INFO"                // Infoレベルのログを出力するか否かを指定する環境変数の名前（空文字列なら出力しない）
+const STREAM_MAX_TOKENS_ENV_NAME = "STREAM_MAX_TOKENS"  // デコーダモデルにEOFが出力されるまでの最大トークン数を指定する環境変数の名前
 const OPENAI_ORGANIZATION_ID = "OPENAI_ORGANIZATION_ID" // OpenAIのOrganization IDを指定する環境変数の名前
 
 // エンドポイント名
@@ -59,3 +63,15 @@ func (el ErrorLevel) String() string {
 		return ""
 	}
 }
+
+// Presetメッセージを格納するためのKEY
+const KEY_GPT_WORD = "gpt_word"
+
+const CONNECTION_PATH = "connection_path"
+
+const ACTION_CHAT_MESSAGE = "chat_message"
+
+const RES_GPT_MESSAGE = "gpt_message"
+const TEST_CHAT_MESSAGE = "test_chat_message"
+
+const ACTION_ERROR = "ERROR_MESSAGE"

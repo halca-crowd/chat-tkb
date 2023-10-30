@@ -23,7 +23,7 @@ func index(writer http.ResponseWriter, request *http.Request) {
 	if request.URL.Path != "/" {
 		status := 404
 		writer.WriteHeader(status)
-		err := fmt.Errorf("No such endpoint: %s", request.URL.Path)
+		err := fmt.Errorf("no such endpoint: %s", request.URL.Path)
 		logger.LoggingHTTPError(status, err)
 		return
 	}
@@ -31,12 +31,23 @@ func index(writer http.ResponseWriter, request *http.Request) {
 	if request.Method != "GET" {
 		status := 405
 		writer.WriteHeader(status)
-		err := fmt.Errorf("This endpoint allows only GET method but recieve %s", request.Method)
+		err := fmt.Errorf("this endpoint allows only GET method but recieve %s", request.Method)
 		logger.LoggingHTTPError(status, err)
 		return
 	}
 	writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	writer.Write([]byte("Hello, FusionComp LLM-API!"))
+}
+
+func preset(writer http.ResponseWriter, request *http.Request) {
+	res, err := buildPresetUserMessages()
+	if err != nil {
+		status := 500
+		writer.WriteHeader(status)
+		return
+	}
+	writer.Header().Set("Content-Type", "application/json; charset=utf-8")
+	json.NewEncoder(writer).Encode(res)
 }
 
 // LLM APIのコントローラ
@@ -46,18 +57,11 @@ func llm_api(writer http.ResponseWriter, request *http.Request) {
 	if request.Method != "GET" {
 		status := 405
 		writer.WriteHeader(status)
-		err := fmt.Errorf("This endpoint allows only GET method but recieve %s", request.Method)
+		err := fmt.Errorf("this endpoint allows only GET method but recieve %s", request.Method)
 		logger.LoggingHTTPError(status, err)
 		return
 	}
 
-	if strings.TrimPrefix(request.Header.Get("Authorization"), "Bearer ") != "n4u_llm_token_9ce944fe_0d53_450a_b538-aa1930926e33" {
-		status  := 403
-		writer.WriteHeader(status)
-		err := fmt.Errorf("This endpoint does not allow Authorization header")
-		logger.LoggingHTTPError(status, err)
-		return
-	}
 	model := ""
 	prompt := ""
 
@@ -79,7 +83,7 @@ func llm_api(writer http.ResponseWriter, request *http.Request) {
 		model = strings.Join(request.Form[MODEL_PARAM_NAME], "")
 		if model == "" {
 			status := 400
-			err := fmt.Errorf("You should set the parameter %s", MODEL_PARAM_NAME)
+			err := fmt.Errorf("you should set the parameter %s", MODEL_PARAM_NAME)
 			writer.WriteHeader(status)
 			logger.LoggingHTTPError(status, err)
 			return
@@ -88,7 +92,7 @@ func llm_api(writer http.ResponseWriter, request *http.Request) {
 		prompt = strings.Join(request.Form[PROMPT_PARAM_NAME], "")
 		if prompt == "" {
 			status := 400
-			err := fmt.Errorf("You should set the parameter %s", PROMPT_PARAM_NAME)
+			err := fmt.Errorf("you should set the parameter %s", PROMPT_PARAM_NAME)
 			writer.WriteHeader(status)
 			logger.LoggingHTTPError(status, err)
 			return

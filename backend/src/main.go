@@ -17,7 +17,6 @@ const (
 	PRODUCTION  = "prod"
 )
 
-
 // APIサーバのメイン
 func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
@@ -78,14 +77,17 @@ func main() {
 	// 	mux.HandleFunc(newrelic.WrapHandleFunc(app, ENDPOINT_LLM_API, llm_api))
 	// 	mux.HandleFunc(newrelic.WrapHandleFunc(app, "/", index))
 	// }
-	 
 
-	router.GET("/llm_api", func(c*gin.Context){
-		llm_api(c.Writer,c.Request)
+	router.GET("/llm_api", func(c *gin.Context) {
+		llm_api(c.Writer, c.Request)
 	})
 
-	router.GET("/", func(c*gin.Context){
-		index(c.Writer,c.Request)
+	router.GET("/preset", func(c *gin.Context) {
+		preset(c.Writer, c.Request)
+	})
+
+	router.GET("/", func(c *gin.Context) {
+		index(c.Writer, c.Request)
 	})
 
 	API_PORT := os.Getenv(API_PORT_VARIABLE_NAME)
