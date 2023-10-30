@@ -9,9 +9,7 @@ type Message struct {
 
 type Request struct {
 	Action  string `json:"action"`
-	UserId  string `json:"user_id"`
 	Message string `json:"message"`
-	Name    string `json:"name"`
 }
 
 type ErrorObject struct {

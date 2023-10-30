@@ -36,6 +36,16 @@ func handler(s []byte) []byte {
 		r := []byte(`{"action":"ACTION_RECV_GPT","user_id":"examper-user-id","message":"hogehoge"}`)
 		return r
 
+	case requestObject.Action == ACTION_CHAT_MESSAGE:
+		// LLM APIにリクエストを送信する
+		res, err := requestPrompt(requestObject.Message)
+		if err != nil {
+			log.Println(err)
+			return errorResponseFactory("faile to send message", 503, "data is not json object")
+
+		}
+		return messageResponseFactory(res)
+
 	default:
 		return errorResponseFactory("faile to execute action", 503, "no such action type")
 	}

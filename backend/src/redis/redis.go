@@ -3,6 +3,7 @@ package redis
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"math"
 	"os"
 	"time"
@@ -52,6 +53,21 @@ func HGetInt(key string, field string) (value float64, err error) {
 		return -1, err
 	}
 	return
+}
+
+func Del(key string) (err error) {
+	redisPath := os.Getenv("REDIS_HOST")
+	client, err := New(redisPath)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	err = client.Del(key).Err()
+	if err != nil {
+		slog.Warn("Failed to delete key: %s", key)
+		return err
+	}
+	return nil
 }
 
 func HVals(key string) (values []string, err error) {

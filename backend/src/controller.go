@@ -8,6 +8,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"notchman.tech/chat-tkb/src/redis"
 )
 
 // リクエストボディの構造体
@@ -135,6 +137,22 @@ func llm_api(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	err = savePresetMsg(result)
+	if err != nil {
+		status := 500
+		logger.LoggingHTTPError(status, err)
+	}
 	writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	writer.Write([]byte(result))
+}
+
+func reset(writer http.ResponseWriter, request *http.Request) {
+	err := redis.Del(KEY_GPT_WORD)
+	if err != nil {
+		status := 500
+		writer.WriteHeader(status)
+		return
+	}
+	writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	writer.Write([]byte("reset"))
 }

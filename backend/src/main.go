@@ -56,38 +56,35 @@ func main() {
 	if len(testValue) == 0 || err != nil {
 		log.Fatalln("failed to connect memcached")
 	}
-	//ローカルなどの開発環境ではNewRelicのエージェントを作成しない
-	// if mode == PRODUCTION {
-	//	//newrelicのライセンスキーを取得
-	// 	newrelicLicenceKey := os.Getenv("NEWRELIC_LICENCE_KEY")
-	// 	if len(newrelicLicenceKey) == 0 {
-	// 		logger.Error("failed to load newrelic env")
-	// 	}
-	// 	//newrelicエージェントの作成
-	// 	app, err := newrelic.NewApplication(
-	// 		newrelic.ConfigAppName("fusioncomp-llm-api"),
-	// 		newrelic.ConfigLicense(newrelicLicenceKey),
-	// 		newrelic.ConfigAppLogForwardingEnabled(true),
-	// 	)
-	// 	if err != nil {
-	// 		logger.Error("failed to create newrelic agent")
-	// 	}
 
-	// 	//newrelicエージェントを導入したhttpハンドラを設定
-	// 	mux.HandleFunc(newrelic.WrapHandleFunc(app, ENDPOINT_LLM_API, llm_api))
-	// 	mux.HandleFunc(newrelic.WrapHandleFunc(app, "/", index))
-	// }
+	// router.GET("/llm_api", func(c *gin.Context) {
+	// 	llm_api(c.Writer, c.Request)
+	// })
 
-	router.GET("/llm_api", func(c *gin.Context) {
-		llm_api(c.Writer, c.Request)
+	// ChatTBKの受信用
+
+	router.GET("/ws", func(c *gin.Context) {
+		// roomId := c.Param("roomId")
+		serveWs(c.Writer, c.Request, "last-hack")
 	})
+
+	// プリセットの取得用API
 
 	router.GET("/preset", func(c *gin.Context) {
 		preset(c.Writer, c.Request)
 	})
-
+	// ヘルスチェック用
 	router.GET("/", func(c *gin.Context) {
 		index(c.Writer, c.Request)
+	})
+	// 管理用（Redisの貯まっているデータを強制削除する）
+	router.POST("/reset", func(c *gin.Context) {
+		reset(c.Writer, c.Request)
+	})
+
+	// 管理用（GETでLLMにプロンプトを投げる）
+	router.GET("/llm_api", func(c *gin.Context) {
+		llm_api(c.Writer, c.Request)
 	})
 
 	API_PORT := os.Getenv(API_PORT_VARIABLE_NAME)
