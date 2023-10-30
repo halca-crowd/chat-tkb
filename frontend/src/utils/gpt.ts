@@ -20,7 +20,7 @@ export const ChatService = (props: Props) => {
     const [messages, setMessages] = useState([props])
     const [status, setStatus] = useState(0.0)
     const socketRef = useRef(null)
-    const [isPaused, setPause] = useState(false)
+    const [isPaused] = useState(false)
     const [gptMessage, setGptMessage] = useState(
         '進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？進捗どうですか？'
     )
@@ -110,8 +110,6 @@ export const ChatService = (props: Props) => {
     return [
         messages,
         sendMessage,
-
-        otherMoney,
         gptMessage,
         status,
         isThrowingMasakari,
