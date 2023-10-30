@@ -7,10 +7,16 @@ services:
       - ./backend/.env
     depends_on:
       - memcached
+      - redis
   memcached:
     image: memcached:alpine
     ports:
       - 11211:11211
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    command: redis-server
   frontend:
     build:
       context: ./frontend
@@ -19,5 +25,5 @@ services:
       - ./frontend:/app
     ports:
       - 5173:5173
-    # depends_on:
-    #   - llm-api
+    depends_on:
+      - llm-api

@@ -3,10 +3,11 @@ package main
 import (
 	"log"
 	"log/slog"
-	"net/http"
 	"os"
 	"time"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"notchman.tech/chat-tkb/src/cached"
 )
 
@@ -16,11 +17,38 @@ const (
 	PRODUCTION  = "prod"
 )
 
+
 // APIサーバのメイン
 func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-
-	mux := http.NewServeMux()
+	router := gin.Default()
+	// Set a lower memory limit for multipart forms (default is 32 MiB)
+	router.MaxMultipartMemory = 8 << 20 // 8 MiB
+	router.Use(cors.New(cors.Config{
+		// 許可したいHTTPメソッドの一覧
+		AllowMethods: []string{
+			"POST",
+			"GET",
+			"OPTIONS",
+			"PUT",
+			"DELETE",
+		},
+		// 許可したいHTTPリクエストヘッダの一覧
+		AllowHeaders: []string{
+			"Access-Control-Allow-Headers",
+			"Content-Type",
+			"Content-Length",
+			"Accept-Encoding",
+			"X-CSRF-Token",
+			"Authorization",
+		},
+		// 許可したいアクセス元の一覧
+		AllowOrigins: []string{
+			"*",
+		},
+		MaxAge: 24 * time.Hour,
+	}))
+	// mux := http.NewServeMux()
 	//キャッシュの作成と導通テスト（他のやり方があれば直す）
 	cacheManager := cached.NewMemcached("memcached:11211")
 	//1分だけ有効なテスト値を挿入する
@@ -31,7 +59,7 @@ func main() {
 	}
 	//ローカルなどの開発環境ではNewRelicのエージェントを作成しない
 	// if mode == PRODUCTION {
-	// 	//newrelicのライセンスキーを取得
+	//	//newrelicのライセンスキーを取得
 	// 	newrelicLicenceKey := os.Getenv("NEWRELIC_LICENCE_KEY")
 	// 	if len(newrelicLicenceKey) == 0 {
 	// 		logger.Error("failed to load newrelic env")
@@ -51,9 +79,14 @@ func main() {
 	// 	mux.HandleFunc(newrelic.WrapHandleFunc(app, "/", index))
 	// }
 	 
-	mux.HandleFunc(ENDPOINT_LLM_API, llm_api)
-	mux.HandleFunc("/", index)
-	
+
+	router.GET("/llm_api", func(c*gin.Context){
+		llm_api(c.Writer,c.Request)
+	})
+
+	router.GET("/", func(c*gin.Context){
+		index(c.Writer,c.Request)
+	})
 
 	API_PORT := os.Getenv(API_PORT_VARIABLE_NAME)
 	if API_PORT == "" {
@@ -61,8 +94,8 @@ func main() {
 	}
 
 	logger.Info("start llm_api server on port: " + API_PORT)
-
-	err = http.ListenAndServe(":"+API_PORT, mux)
+	router.Run(":8080")
+	// err = http.ListenAndServe(":"+API_PORT, mux)
 	if err != nil {
 		logger.Error("ListenAndServe: ", err)
 	}
