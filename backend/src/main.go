@@ -57,10 +57,6 @@ func main() {
 		log.Fatalln("failed to connect memcached")
 	}
 
-	// router.GET("/llm_api", func(c *gin.Context) {
-	// 	llm_api(c.Writer, c.Request)
-	// })
-
 	// ChatTBKの受信用
 
 	router.GET("/ws", func(c *gin.Context) {
@@ -69,7 +65,6 @@ func main() {
 	})
 
 	// プリセットの取得用API
-
 	router.GET("/preset", func(c *gin.Context) {
 		preset(c.Writer, c.Request)
 	})
@@ -91,7 +86,7 @@ func main() {
 	if API_PORT == "" {
 		logger.Error("you should set an environment variable: %s", API_PORT_VARIABLE_NAME)
 	}
-
+	go h.run()
 	logger.Info("start llm_api server on port: " + API_PORT)
 	router.Run(":8080")
 	// err = http.ListenAndServe(":"+API_PORT, mux)

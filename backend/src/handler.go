@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"log/slog"
 	"time"
 
 	"github.com/pkg/errors"
@@ -39,10 +40,16 @@ func handler(s []byte) []byte {
 	case requestObject.Action == ACTION_CHAT_MESSAGE:
 		// LLM APIにリクエストを送信する
 		res, err := requestPrompt(requestObject.Message)
-		if err != nil {
-			log.Println(err)
-			return errorResponseFactory("faile to send message", 503, "data is not json object")
 
+		if err != nil {
+			slog.Error(err.Error())
+			_ = savePresetMsg("failed to fetch openai api")
+			return messageResponseFactory("failed to fetch openai api")
+			// return errorResponseFactory("faile to send message", 503, "data is not json object")
+		}
+		err = savePresetMsg(res)
+		if err != nil{
+			slog.Info("failed to save preset message")
 		}
 		return messageResponseFactory(res)
 

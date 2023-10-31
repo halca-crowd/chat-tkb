@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
@@ -45,6 +46,7 @@ func preset(writer http.ResponseWriter, request *http.Request) {
 	res, err := buildPresetUserMessages()
 	if err != nil {
 		status := 500
+		slog.Error(err.Error())
 		writer.WriteHeader(status)
 		return
 	}
