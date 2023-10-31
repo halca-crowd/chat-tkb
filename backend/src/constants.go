@@ -75,3 +75,4 @@ const RES_GPT_MESSAGE = "gpt_message"
 const TEST_CHAT_MESSAGE = "test_chat_message"
 
 const ACTION_ERROR = "ERROR_MESSAGE"
+const ACTION_FORCE_RESET = "reset_message"

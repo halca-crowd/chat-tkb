@@ -8,6 +8,7 @@ export const ACTION_SEND_MESSAGE = 'chat_message'
 export const ACTION_RECV_STATUS = 'ACTION_SEND_STATUS'
 export const ACTION_SEND_MASAKARI = 'gpt_message'
 export const ACTION_RECV_MASAKARI = 'ACTION_GPT_MESSAGE'
+export const ACTION_FORCE_RESET = 'reset_message'
 export enum ReadyState {
   UNINSTANTIATED = -1,
   CONNECTING = 0,

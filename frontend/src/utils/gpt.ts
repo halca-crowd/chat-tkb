@@ -4,7 +4,7 @@ import {
   ACTION_RECV_STATUS,
   ACTION_RECV_MESSAGE,
   randomStr,
-  BASE_API_URL,
+  BASE_API_URL, ACTION_FORCE_RESET,
 } from '@/utils/constants'
 
 interface Props {
@@ -97,6 +97,8 @@ export const ChatService = (props: Props) => {
       } else if (message.action == ACTION_RECV_STATUS) {
         console.log(message.status)
         setStatus(message.status.cpuutilization)
+      }else if (message.action == ACTION_FORCE_RESET) {
+        setMessages([])
       }
     }
   }, [isPaused])

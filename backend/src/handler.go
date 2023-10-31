@@ -52,7 +52,9 @@ func handler(s []byte) []byte {
 			slog.Info("failed to save preset message")
 		}
 		return messageResponseFactory(res)
-
+	case requestObject.Action == ACTION_FORCE_RESET:
+		// 強制削除メッセージを送信
+		return forceResetMessageFactory()
 	default:
 		return errorResponseFactory("faile to execute action", 503, "no such action type")
 	}
@@ -67,6 +69,17 @@ func errorResponseFactory(name string, code int, msg string) []byte {
 		Msg:    msg,
 	}
 	res, err := json.Marshal(errRes)
+	if err != nil {
+		return FatalErrorResponse
+	}
+	return res
+}
+
+func forceResetMessageFactory()[]byte{
+	forceResetMessage := ForceResetMessage{
+		Action: ACTION_FORCE_RESET,
+	}
+	res, err := json.Marshal(forceResetMessage)
 	if err != nil {
 		return FatalErrorResponse
 	}

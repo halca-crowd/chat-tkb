@@ -19,6 +19,10 @@ type ErrorObject struct {
 	Msg    string `json:"msg"`
 }
 
+type ForceResetMessage struct {
+	Action string `json:"action"`
+}
+
 type ChatResponse struct {
 	Action  string `json:"action"`
 	Message string `json:"message"`
