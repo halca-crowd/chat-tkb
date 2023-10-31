@@ -1,5 +1,3 @@
-const MILLISECONDS = 1
-const SECONDS = 1000 * MILLISECONDS
 export const randomStr = Math.random().toString(32).substring(2)
 export const DEFAULT_OPTIONS = {}
 export const DEFAULT_RECONNECT_LIMIT = 20
