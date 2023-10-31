@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { Message } from '@/components/Message'
 import {
   ACTION_SEND_MASAKARI,
-  ACTION_SEND_MESSAGE,
+  ACTION_RECV_MESSAGE,
   ChatPropsType,
 } from '@/utils'
 
@@ -52,7 +52,7 @@ export const Chat = ({ name, messages, sendMessage }: Props) => {
     sendMessage({
       message: text,
       name: name,
-      action: ACTION_SEND_MESSAGE,
+      action: ACTION_RECV_MESSAGE,
     })
 
     setText('')
@@ -87,7 +87,7 @@ export const Chat = ({ name, messages, sendMessage }: Props) => {
       className={'d-flex flex-column justify-content-between'}
     >
       <div className={'overflow-scroll vh-100'} style={style.listBox}>
-        <ul>
+        <ul >
           {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
@@ -124,7 +124,8 @@ export const Chat = ({ name, messages, sendMessage }: Props) => {
 
 const style = {
   body: {
-    height: '560px',
+    height: '90vh',
   },
   listBox: {},
 }
+

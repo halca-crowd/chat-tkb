@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   ACTION_RECV_MASAKARI,
   ACTION_RECV_STATUS,
-  ACTION_SEND_MESSAGE,
+  ACTION_RECV_MESSAGE,
   randomStr,
 } from '@/utils/constants'
 
@@ -57,7 +57,7 @@ export const ChatService = (props: Props) => {
       if (isPaused) return
       //console.log(e.data)
       const message = JSON.parse(e.data)
-      if (message.action == ACTION_SEND_MESSAGE) {
+      if (message.action == ACTION_RECV_MESSAGE) {
         setMessages((prevMessages) => [...prevMessages, message])
       } else if (message.action == ACTION_RECV_MASAKARI) {
         setThrowingMasakari(false)

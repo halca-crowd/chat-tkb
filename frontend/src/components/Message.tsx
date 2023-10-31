@@ -24,7 +24,7 @@ const initState = {
 }
 export const Message = (state: Props = initState) => {
   return (
-    <div className={'d-flex flex-column'}>
+    <div className={'d-flex flex-column'} >
       <p
         style={{
           borderRadius: '10px 10px 10px 10px',
