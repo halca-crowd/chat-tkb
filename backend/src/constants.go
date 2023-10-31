@@ -20,6 +20,14 @@ const ENDPOINT_LLM_API = "/llm_api"
 const MODEL_PARAM_NAME = "model"   // モデル名
 const PROMPT_PARAM_NAME = "prompt" // プロンプト
 
+// ロール名
+type Role string // ロール名のEnum
+const (
+	System    Role = "system"    // システム
+	User      Role = "user"      // ユーザー
+	Assistant Role = "assistant" // アシスタント
+)
+
 // モデル名
 type ModelName string // モデル名のEnum
 

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	openai "github.com/sashabaranov/go-openai"
 )
@@ -116,7 +117,7 @@ func throwChatStreamRequest(client *openai.Client, model string, prompt string, 
 }
 
 // 対話形式のモデルにEOFが出力されるまでリクエストを投げる。複数回の対話に対応
-func throwChatStreamRequests(client *openai.Client, model string, prompt string, max_tokens int, history []openai.ChatCompletionMessage) ([]openai.ChatCompletionMessage, error) {
+func throwChatStreamRequests(client *openai.Client, model string, prompt string, max_tokens int, history []ChatMessage) ([]ChatMessage, error) {
 	messages := []openai.ChatCompletionMessage{
 		{
 			Role:    openai.ChatMessageRoleUser,
@@ -125,7 +126,12 @@ func throwChatStreamRequests(client *openai.Client, model string, prompt string,
 	}
 	// if the history exists, insert history at first index of messages
 	if len(history) > 0 {
-		messages = append(messages, history...)
+		for _, h := range history {
+			messages = append(messages, openai.ChatCompletionMessage{
+				Role:    roleToOpenAIRole(h.Role),
+				Content: h.Message.Message,
+			})
+		}
 	}
 	stream, err := client.CreateChatCompletionStream(
 		context.Background(),
@@ -137,7 +143,7 @@ func throwChatStreamRequests(client *openai.Client, model string, prompt string,
 		},
 	)
 	if err != nil {
-		return messages, err
+		return history, err
 	}
 
 	defer stream.Close()
@@ -146,7 +152,7 @@ func throwChatStreamRequests(client *openai.Client, model string, prompt string,
 		resp_i, err := stream.Recv()
 		if err != nil {
 			if !errors.Is(err, io.EOF) {
-				return messages, err
+				return history, err
 			}
 			break
 		}
@@ -154,11 +160,15 @@ func throwChatStreamRequests(client *openai.Client, model string, prompt string,
 		response_text += resp_i.Choices[0].Delta.Content
 	}
 	response := append(
-		messages,
-		openai.ChatCompletionMessage{
-			Role:    openai.ChatMessageRoleAssistant,
-			Content: response_text,
-		})
+		history,
+		ChatMessage{
+			Role: openai.ChatMessageRoleAssistant,
+			Message: Message{
+				Message: response_text,
+				Created: time.Now().Unix(),
+			},
+		},
+	)
 
 	return response, nil
 }
@@ -172,5 +182,19 @@ func selectModel(model_name ModelName) string {
 		return openai.GPT3Davinci
 	default:
 		return ""
+	}
+}
+
+// ロール変換 to OpenAI
+func roleToOpenAIRole(role Role) string {
+	switch role {
+	case System:
+		return openai.ChatMessageRoleSystem
+	case User:
+		return openai.ChatMessageRoleUser
+	case Assistant:
+		return openai.ChatMessageRoleAssistant
+	default:
+		return openai.ChatMessageRoleUser
 	}
 }

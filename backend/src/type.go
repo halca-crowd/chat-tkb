@@ -2,6 +2,11 @@ package main
 
 import "github.com/gorilla/websocket"
 
+type ChatMessage struct {
+	Role    Role    `string:"role"`
+	Message Message `json:"message"`
+}
+
 type Message struct {
 	Message string `json:"message"`
 	Created int64  `json:"created_at"`
