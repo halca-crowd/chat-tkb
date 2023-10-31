@@ -30,7 +30,7 @@ services:
       - ./web/html:/usr/share/nginx/html
       - ./web/letsencrypt:/etc/letsencrypt
     depends_on:
-      - app
+      - llm-api
   certbot:
     image: certbot/certbot:v1.7.0
     volumes:
