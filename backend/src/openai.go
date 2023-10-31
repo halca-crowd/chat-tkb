@@ -129,7 +129,7 @@ func throwChatStreamRequests(client *openai.Client, model string, prompt string,
 		for _, h := range history {
 			messages = append(messages, openai.ChatCompletionMessage{
 				Role:    roleToOpenAIRole(h.Role),
-				Content: h.Message.Message,
+				Content: h.Content.Message,
 			})
 		}
 	}
@@ -163,7 +163,7 @@ func throwChatStreamRequests(client *openai.Client, model string, prompt string,
 		history,
 		ChatMessage{
 			Role: openai.ChatMessageRoleAssistant,
-			Message: Message{
+			Content: Message{
 				Message: response_text,
 				Created: time.Now().Unix(),
 			},

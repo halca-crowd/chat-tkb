@@ -3,8 +3,8 @@ package main
 import "github.com/gorilla/websocket"
 
 type ChatMessage struct {
-	Role    Role    `string:"role"`
-	Message Message `json:"message"`
+	Role    Role    `json:"role"`
+	Content Message `json:"content"`
 }
 
 type Message struct {
