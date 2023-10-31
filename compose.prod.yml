@@ -26,7 +26,6 @@ services:
       - "443:443"
     volumes:
       - ./web/nginx.prod.conf:/etc/nginx/nginx.conf
-      - socket:/var/tmp
       - ./web/html:/usr/share/nginx/html
       - ./web/letsencrypt:/etc/letsencrypt
     depends_on:
