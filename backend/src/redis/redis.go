@@ -284,7 +284,7 @@ func LPush(key string, value string) (err error) {
 	if result == 0 {
 		fmt.Println("set expire")
 		err = client.LPush(key, value).Err()
-		_, err = client.Expire(key, 1*time.Hour).Result()
+		_, err = client.Expire(key, 2*time.Hour).Result()
 		return
 	}
 	err = client.LPush(key, value).Err()
@@ -304,7 +304,7 @@ func RPush(key string, value string) (err error) {
 	if result == 0 {
 		fmt.Println("set expire")
 		err = client.RPush(key, value).Err()
-		_, err = client.Expire(key, 1*time.Hour).Result()
+		_, err = client.Expire(key, 2*time.Hour).Result()
 		return
 	}
 	err = client.RPush(key, value).Err()

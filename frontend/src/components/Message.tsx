@@ -24,17 +24,19 @@ const initState = {
 }
 export const Message = (state: Props = initState) => {
   return (
-    <div className={'d-flex flex-column m-2'} >
+    <div className={'d-flex flex-column m-2'}>
       <p
         style={{
           borderRadius: '10px 10px 10px 10px',
-          background: state.emotions ? colorChanger(state.emotions) : '#00acd166',
+          background: state.emotions
+            ? colorChanger(state.emotions)
+            : '#00acd166',
           padding: '1em 1em',
           fontSize: '1.2rem',
           marginBottom: '0',
           color: '#0a0a0a',
           fontFamily: 'Reggae One',
-          overflowWrap: "break-word",
+          overflowWrap: 'break-word',
         }}
       >
         {state.message}

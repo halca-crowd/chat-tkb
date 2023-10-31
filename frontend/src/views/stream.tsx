@@ -1,64 +1,61 @@
 /* eslint-disable */
 // @ts-nocheck
-import {useState} from 'react'
-import {ACTION_RECV_MESSAGE, ChatService} from '@/utils'
-import {css} from '@emotion/react'
-import {Chat} from '@/containers/Chat.tsx'
+import { useState } from 'react'
+import { ACTION_RECV_MESSAGE, BASE_API_URL, ChatService } from '@/utils'
+import { css } from '@emotion/react'
+import { Chat } from '@/containers/Chat.tsx'
 
 export function Stream() {
-    const [name, setName] = useState('anonymous')
-    const [show, setShow] = useState(false)
-    const [event, setEvent] = useState(true)
-    const [messages, sendMessage, status, isThrowingMasakari] = ChatService({
-        name: 'ChatTKB',
-        message: `ようこそ、${name}さん`,
-        action: ACTION_RECV_MESSAGE,
-    })
+  const [name, setName] = useState('anonymous')
+  const [show, setShow] = useState(false)
+  const [event, setEvent] = useState(true)
+  const [messages, sendMessage, status, isThrowingMasakari] = ChatService({
+    name: 'ChatTKB',
+    message: `ようこそ、${name}さん`,
+    action: ACTION_RECV_MESSAGE,
+  })
 
-    if (event && !show && Number(status) / 100.0 > 0.8) {
-        setShow(true)
-        //一度だけイベントを発火させる
-        setEvent(false)
-    }
+  if (event && !show && Number(status) / 100.0 > 0.8) {
+    setShow(true)
+    //一度だけイベントを発火させる
+    setEvent(false)
+  }
 
-    return (
-        <>
-            {/*<Modal setShow={setShow} show={show} />*/}
-            <div
-                className={'overflow-auto vh-100'}
-                style={style.back}
-            >
-                <Chat
-                    name={name}
-                    messages={messages}
-                    money={false}
-                    otherMoney={false}
-                    sendMessage={sendMessage}
-                    isThrowingMasakari={isThrowingMasakari}
-                />
-            </div>
-        </>
-    )
+  return (
+    <>
+      {/*<Modal setShow={setShow} show={show} />*/}
+      <div className={'overflow-auto vh-100'} style={style.back}>
+        <Chat
+          name={name}
+          messages={messages}
+          money={false}
+          otherMoney={false}
+          sendMessage={sendMessage}
+          isThrowingMasakari={isThrowingMasakari}
+        />
+      </div>
+    </>
+  )
 }
 
 export default Stream
 const style = {
-    header: {
-        flex: '1',
-        fontSize: '3rem',
-        fontFamily: 'DotGothic16',
-    },
-    title: {
-        fontSize: '30px',
-        fontWeight: 'bold',
-    },
-    userIcon: {
-        height: '50px',
-        borderRadius: '50%',
-    },
-    back: {
-        padding: "1em"
-    },
+  header: {
+    flex: '1',
+    fontSize: '3rem',
+    fontFamily: 'DotGothic16',
+  },
+  title: {
+    fontSize: '30px',
+    fontWeight: 'bold',
+  },
+  userIcon: {
+    height: '50px',
+    borderRadius: '50%',
+  },
+  back: {
+    padding: '1em',
+  },
 }
 
 const viewerStyle = css`

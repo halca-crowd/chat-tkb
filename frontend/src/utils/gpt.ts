@@ -4,6 +4,7 @@ import {
   ACTION_RECV_STATUS,
   ACTION_RECV_MESSAGE,
   randomStr,
+  BASE_API_URL,
 } from '@/utils/constants'
 
 interface Props {
@@ -47,6 +48,36 @@ export const ChatService = (props: Props) => {
       socketRefCurrent.close()
     }
   }, [])
+
+  // 初期データのコール
+  useEffect(() => {
+    const url = BASE_API_URL + '/preset'
+    // APIからデータを非同期に取得
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText)
+        }
+        return response.json()
+      })
+      .then((data) => {
+        // データを取得してから、messages の状態を更新
+        const mappedData = data.map((item: any) => {
+          return {
+            name: 'ChatTKB',
+            message: item.message,
+            action: ACTION_RECV_MESSAGE,
+          }
+        })
+        setMessages(mappedData)
+      })
+      .catch((error) => {
+        console.error(
+          'There has been a problem with your fetch operation:',
+          error,
+        )
+      })
+  }, []) // 空の依存配列を渡すことで、この useEffect はコンポーネントのマウント時に一度だけ実行されます
 
   useEffect(() => {
     if (!socketRef.current) return
@@ -95,16 +126,7 @@ export const ChatService = (props: Props) => {
     // setMessages((prevMessages) => [...prevMessages, aMessage])
   }
 
-  // マサカリを投げた後、
-  useEffect(() => {
-    if (isThrowingMasakari) {
-      setBreakingWindow(true)
-    }
-
-    return () => {
-      setBreakingWindow(false)
-    }
-  }, [isThrowingMasakari])
+  // APIからプリセットデータを取得する
 
   return [
     messages,
