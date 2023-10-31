@@ -24,15 +24,17 @@ const initState = {
 }
 export const Message = (state: Props = initState) => {
   return (
-    <div className={'d-flex flex-column'} >
+    <div className={'d-flex flex-column m-2'} >
       <p
         style={{
           borderRadius: '10px 10px 10px 10px',
-          background: state.emotions ? colorChanger(state.emotions) : '#e0e0e0',
-          padding: '10px 20px',
+          background: state.emotions ? colorChanger(state.emotions) : '#00acd166',
+          padding: '1em 1em',
+          fontSize: '1.2rem',
           marginBottom: '0',
           color: '#0a0a0a',
           fontFamily: 'Reggae One',
+          overflowWrap: 'break-all',
         }}
       >
         {state.message}
@@ -134,6 +136,6 @@ function colorChanger(emotions: Emotions) {
 const style = {
   sub: {
     fontFamily: 'Noto Sans JP',
-    fontSize: '0.7em',
+    padding: '0 20px',
   },
 }

@@ -24,9 +24,8 @@ export function Stream() {
     return (
         <>
             {/*<Modal setShow={setShow} show={show} />*/}
-
             <div
-                className={''}
+                className={'overflow-auto vh-100'}
                 style={style.back}
             >
                 <Chat
@@ -58,7 +57,6 @@ const style = {
         borderRadius: '50%',
     },
     back: {
-        backgroundColor: '#f0f0f0b0',
         padding: "1em"
     },
 }

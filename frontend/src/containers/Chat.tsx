@@ -86,7 +86,7 @@ export const Chat = ({ name, messages, sendMessage }: Props) => {
       style={style.body}
       className={'d-flex flex-column justify-content-between'}
     >
-      <div className={'overflow-scroll vh-100'} style={style.listBox}>
+      <div className={'vh-100'} style={style.listBox}>
         <ul >
           {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -126,6 +126,7 @@ const style = {
   body: {
     height: '90vh',
   },
-  listBox: {},
+  listBox: {
+  },
 }
 
