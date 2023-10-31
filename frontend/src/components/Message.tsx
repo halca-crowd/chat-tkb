@@ -34,7 +34,7 @@ export const Message = (state: Props = initState) => {
           marginBottom: '0',
           color: '#0a0a0a',
           fontFamily: 'Reggae One',
-          overflowWrap: 'break-all',
+          overflowWrap: "break-word",
         }}
       >
         {state.message}
