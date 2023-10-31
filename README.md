@@ -22,3 +22,13 @@
 {"action":"chat_message","message":"hogehoge"}
 
 ```
+
+certbot
+
+```shell
+docker compose -f compose.prod.yml exec /bin/sh
+```
+コンテナにログイン後、以下のコマンドを実行する
+```shell 
+certbot certonly --webroot -w / -d api-chat-tkb.crowd4u.org
+```
