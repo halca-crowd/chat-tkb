@@ -1,0 +1,41 @@
+services:
+  llm-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - memcached
+      - redis
+    ports:
+      - 8080:8080
+  memcached:
+    image: memcached:alpine
+    ports:
+      - 11211:11211
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    command: redis-server
+  web:
+    image: nginx:stable
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./web/nginx.prod.conf:/etc/nginx/nginx.conf
+      - socket:/var/tmp
+      - ./web/html:/usr/share/nginx/html
+      - ./web/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - app
+  certbot:
+    image: certbot/certbot:v1.7.0
+    volumes:
+      - ./web/html:/usr/share/nginx/html
+      - ./web/letsencrypt:/etc/letsencrypt
+      - ./web/log_letsencrypt:/var/log/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    restart: always
