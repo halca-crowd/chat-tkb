@@ -19,13 +19,3 @@ services:
     ports:
       - "6379:6379"
     command: redis-server
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./frontend:/app
-  #   ports:
-  #     - 5173:5173
-  #   depends_on:
-  #     - llm-api

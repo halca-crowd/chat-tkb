@@ -1,27 +1,33 @@
-# React + TypeScript + Vite
+# フロントエンド
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+事前のnodeとpnpmをインストールしてください。nodenvを使用している場合は.node-versionに指定されているバージョンでインストールしてください。
+推奨は20.x以上です。なお、コマンドが見つからない場合はシェルを再起動してください。
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```shell
+nodenv install 21.1.0
+npm install -g pnpm
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## 開発方法
+
+開発サーバーは以下のコマンドで実行されます。環境変数は`.env.dev`を読みに行くので別途バックエンドを起動しておいてください。
+
+```shell
+pnpm install
+pnpm run dev
+```
+
+## デプロイ方法
+
+netlify-cliをインストールしておいてください。
+
+```shell
+npm install -g netlify-cli
+```
+
+以下のコマンドでデプロイできます。`--prod`を抜くとプレビュー環境にデプロイされます。
+
+```shell
+netlify build
+netlify deploy --prod
+```

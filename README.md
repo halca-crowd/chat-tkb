@@ -6,7 +6,23 @@
 
 本リポジトリはいわゆるモノレポ構成になっています。
 ローカル環境ではDockerを用いることでフロント/バックエンドの開発環境を構築することが出来ます。
+バックエンドはDockerで起動し、フロントエンドはviteの開発サーバーを立ち上げてください。
 
+
+```shell
+docker compose build
+docker compose up -d
+```
+
+## 本番環境での実行
+
+本番環境では以下のコマンドで起動してください。なお、初回起動時には`nginx.conf`の443関連の設定を落としてください。
+参考に初回起動時（certbot実行前）のnginx.confをexampleとして格納しています。
+
+```shell
+docker compose -f compose.prod.yml build
+docekr compose -f compose.prod.yml up -d
+```
 
 ## 参考文献
 
@@ -15,7 +31,7 @@
 - https://qiita.com/mttt/items/aa2ba3a0677a803d0436
 
 
-## TEST
+## TEST（バックエンド）
 
 管理用メッセージ送信オブジェクト
 
@@ -24,7 +40,7 @@
 
 ```
 
-certbot
+## certbotの作成手順
 
 ```shell
 docker compose -f compose.prod.yml exec /bin/sh
