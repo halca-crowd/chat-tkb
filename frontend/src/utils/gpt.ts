@@ -4,7 +4,8 @@ import {
   ACTION_RECV_STATUS,
   ACTION_RECV_MESSAGE,
   randomStr,
-  BASE_API_URL, ACTION_FORCE_RESET,
+  BASE_API_URL,
+  ACTION_FORCE_RESET,
 } from '@/utils/constants'
 
 interface Props {
@@ -62,10 +63,13 @@ export const ChatService = (props: Props) => {
       })
       .then((data) => {
         // データを取得してから、messages の状態を更新
-        const mappedData = data.map((item: any) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const mappedData = data.map((item) => {
           return {
             name: 'ChatTKB',
             message: item.message,
+            prompt: item.prompt,
             action: ACTION_RECV_MESSAGE,
           }
         })
@@ -89,7 +93,7 @@ export const ChatService = (props: Props) => {
       //console.log(e.data)
       const message = JSON.parse(e.data)
       if (message.action == ACTION_RECV_MESSAGE) {
-        setMessages((prevMessages) => [...prevMessages, message])
+        setMessages((prevMessages) => [message, ...prevMessages])
       } else if (message.action == ACTION_RECV_MASAKARI) {
         setThrowingMasakari(false)
         setBreakingWindow(false)
@@ -97,7 +101,7 @@ export const ChatService = (props: Props) => {
       } else if (message.action == ACTION_RECV_STATUS) {
         console.log(message.status)
         setStatus(message.status.cpuutilization)
-      }else if (message.action == ACTION_FORCE_RESET) {
+      } else if (message.action == ACTION_FORCE_RESET) {
         setMessages([])
       }
     }

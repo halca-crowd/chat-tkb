@@ -43,15 +43,19 @@ func handler(s []byte) []byte {
 
 		if err != nil {
 			slog.Error(err.Error())
-			_ = savePresetMsg("failed to fetch openai api")
-			return messageResponseFactory("failed to fetch openai api")
+			_ = savePresetMsg(requestObject.Message,"failed to fetch openai api")
+			return messageResponseFactory(requestObject.Message,"failed to fetch openai api")
 			// return errorResponseFactory("faile to send message", 503, "data is not json object")
 		}
-		err = savePresetMsg(res)
+		err = savePresetMsg(requestObject.Message,res)
 		if err != nil{
 			slog.Info("failed to save preset message")
 		}
-		return messageResponseFactory(res)
+		err = savePromptMsg(requestObject.Message)
+		if err != nil{
+			slog.Info("failed to save preset message")
+		}
+		return messageResponseFactory(requestObject.Message,res)
 	case requestObject.Action == ACTION_FORCE_RESET:
 		// 強制削除メッセージを送信
 		return forceResetMessageFactory()
@@ -86,13 +90,14 @@ func forceResetMessageFactory()[]byte{
 	return res
 }
 
-func messageResponseFactory(msg string) []byte {
+func messageResponseFactory(inputMsg string,outputMsg string) []byte {
 	// 現在時刻を取得
 	current_time := time.Now().Unix()
 	resObj := ChatResponse{
 		Action:  RES_GPT_MESSAGE,
-		Message: msg,
+		Message: outputMsg,
 		Created: current_time,
+		Prompt: inputMsg,
 	}
 	res, err := json.Marshal(resObj)
 	if err != nil {

@@ -4,6 +4,12 @@ import "github.com/gorilla/websocket"
 
 type Message struct {
 	Message string `json:"message"`
+	Prompt string `json:"prompt"`
+	Created int64  `json:"created_at"`
+}
+
+type PromptData struct {
+	Prompt string `json:"prompt"`
 	Created int64  `json:"created_at"`
 }
 
@@ -27,6 +33,7 @@ type ChatResponse struct {
 	Action  string `json:"action"`
 	Message string `json:"message"`
 	Created int64  `json:"created_at"`
+	Prompt string `json:"prompt"`
 }
 
 // WebSocket関連

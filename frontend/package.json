@@ -10,8 +10,8 @@
     "preview": "vite preview",
     "lint:prettier": "prettier --check .",
     "lintfix:prettier": "prettier --write .",
-    "lint:eslint": "eslint --ext \".js,.ts\" --ignore-path .gitignore .",
-    "lintfix:eslint": "pnpm run lint:eslint --fix",
+    "lint:eslint": "cd $INIT_CWD && eslint . --ext .js,.ts,.jsx,.tsx",
+    "lintfix:eslint": "cd $INIT_CWD && eslint . --ext .js,.ts,.jsx,.tsx --fix",
     "lint": "pnpm run lint:prettier && pnpm lint:eslint",
     "lintfix": "pnpm lintfix:prettier && pnpm run lintfix:eslint",
     "lint-old": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
@@ -32,11 +32,11 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
+    "@types/react": "^18.2.33",
+    "@types/react-dom": "^18.2.14",
     "@types/styled-components": "^5.1.29",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
     "@vitejs/plugin-react": "^4.1.0",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
@@ -46,7 +46,7 @@
     "prettier": "^3.0.3",
     "styled-components": "^6.1.0",
     "typescript": "^5.2.2",
-    "typescript-eslint": "^0.0.1-alpha.0",
+    "typescript-eslint": "0.0.1-alpha.0",
     "vite": "^4.5.0",
     "vite-tsconfig-paths": "^4.2.1"
   }

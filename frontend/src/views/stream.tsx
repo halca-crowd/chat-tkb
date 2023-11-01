@@ -25,14 +25,7 @@ export function Stream() {
     <>
       {/*<Modal setShow={setShow} show={show} />*/}
       <div className={'overflow-auto vh-100'} style={style.back}>
-        <Chat
-          name={name}
-          messages={messages}
-          money={false}
-          otherMoney={false}
-          sendMessage={sendMessage}
-          isThrowingMasakari={isThrowingMasakari}
-        />
+        <Chat messages={messages} />
       </div>
     </>
   )
