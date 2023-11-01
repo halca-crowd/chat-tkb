@@ -75,9 +75,17 @@ func (el ErrorLevel) String() string {
 // Presetメッセージを格納するためのKEY
 const KEY_GPT_WORD = "gpt_word"
 
+// チャット開始時刻を格納するためのKEY
+const KEY_CHAT_HISTORY_ORIGIN = "chat_history_origin"
+
+// チャットメッセージを格納するためのKEY
+const KEY_CHAT_HISTORY = "chat_history"
+
 const CONNECTION_PATH = "connection_path"
 
 const ACTION_CHAT_MESSAGE = "chat_message"
+
+const ACTION_RESET_CONTEXT = "reset_context"
 
 const RES_GPT_MESSAGE = "gpt_message"
 const TEST_CHAT_MESSAGE = "test_chat_message"

@@ -9,12 +9,16 @@ type ChatMessage struct {
 
 type Message struct {
 	Message string `json:"message"`
-	Prompt string `json:"prompt"`
+	Prompt  string `json:"prompt"`
 	Created int64  `json:"created_at"`
 }
 
+type ContextOrigin struct {
+	Origin int64 `json:"origin"`
+}
+
 type PromptData struct {
-	Prompt string `json:"prompt"`
+	Prompt  string `json:"prompt"`
 	Created int64  `json:"created_at"`
 }
 
@@ -38,7 +42,7 @@ type ChatResponse struct {
 	Action  string `json:"action"`
 	Message string `json:"message"`
 	Created int64  `json:"created_at"`
-	Prompt string `json:"prompt"`
+	Prompt  string `json:"prompt"`
 }
 
 // WebSocket関連

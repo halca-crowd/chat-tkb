@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"log/slog"
+	"strconv"
 	"time"
 
 	"github.com/pkg/errors"
@@ -38,24 +39,45 @@ func handler(s []byte) []byte {
 		return r
 
 	case requestObject.Action == ACTION_CHAT_MESSAGE:
+		hisotry_origin_int, err := getChatHistoryOrigin()
+		if err != nil {
+			slog.Error(err.Error())
+			return errorResponseFactory("faile to fetch chat history", 503, "failed to fetch chat history")
+		}
+		// キャッシュから会話ログの取り出し
+		history, err := getChatHistory(hisotry_origin_int)
+
 		// LLM APIにリクエストを送信する
-		res, err := requestPrompt(requestObject.Message)
+		res, err := requestPrompt(requestObject.Message, history)
 
 		if err != nil {
 			slog.Error(err.Error())
-			_ = savePresetMsg(requestObject.Message,"failed to fetch openai api")
-			return messageResponseFactory(requestObject.Message,"failed to fetch openai api")
+			_ = savePresetMsg(requestObject.Message, "failed to fetch openai api")
+			return messageResponseFactory(requestObject.Message, "failed to fetch openai api")
 			// return errorResponseFactory("faile to send message", 503, "data is not json object")
 		}
-		err = savePresetMsg(requestObject.Message,res)
-		if err != nil{
+		err = savePresetMsg(res)
+		if err != nil {
 			slog.Info("failed to save preset message")
 		}
 		err = savePromptMsg(requestObject.Message)
-		if err != nil{
+		if err != nil {
 			slog.Info("failed to save preset message")
 		}
-		return messageResponseFactory(requestObject.Message,res)
+		return messageResponseFactory(requestObject.Message, res.Content.Message)
+	case requestObject.Action == ACTION_RESET_CONTEXT:
+		// リクエストのMessageをint64に変換。エラーがあればエラーレスポンスを返す
+		history_origin_int, err := strconv.ParseInt(requestObject.Message, 10, 64)
+		if err != nil {
+			slog.Error(err.Error())
+			return errorResponseFactory("faile to reset context", 503, "failed to reset context")
+		}
+		err = setChatHistoryOrigin(history_origin_int)
+		if err != nil {
+			slog.Error(err.Error())
+			return errorResponseFactory("faile to reset context", 503, "failed to reset context")
+		}
+		return messageResponseFactory("reset context", "reset context")
 	case requestObject.Action == ACTION_FORCE_RESET:
 		// 強制削除メッセージを送信
 		return forceResetMessageFactory()
@@ -79,7 +101,7 @@ func errorResponseFactory(name string, code int, msg string) []byte {
 	return res
 }
 
-func forceResetMessageFactory()[]byte{
+func forceResetMessageFactory() []byte {
 	forceResetMessage := ForceResetMessage{
 		Action: ACTION_FORCE_RESET,
 	}
@@ -90,14 +112,13 @@ func forceResetMessageFactory()[]byte{
 	return res
 }
 
-func messageResponseFactory(inputMsg string,outputMsg string) []byte {
+func messageResponseFactory(inputMsg string, outputMsg string) []byte {
 	// 現在時刻を取得
 	current_time := time.Now().Unix()
 	resObj := ChatResponse{
 		Action:  RES_GPT_MESSAGE,
 		Message: outputMsg,
 		Created: current_time,
-		Prompt: inputMsg,
 	}
 	res, err := json.Marshal(resObj)
 	if err != nil {
