@@ -40,12 +40,16 @@ func handler(s []byte) []byte {
 
 	case requestObject.Action == ACTION_CHAT_MESSAGE:
 		hisotry_origin_int, err := getChatHistoryOrigin()
+		history := []ChatMessage{}
 		if err != nil {
-			slog.Error(err.Error())
-			return errorResponseFactory("faile to fetch chat history", 503, "failed to fetch chat history")
+			slog.Info(err.Error())
+		} else {
+			// キャッシュから会話ログの取り出し
+			history, err = getChatHistory(hisotry_origin_int)
+			if err != nil {
+				slog.Info(err.Error())
+			}
 		}
-		// キャッシュから会話ログの取り出し
-		history, err := getChatHistory(hisotry_origin_int)
 
 		// LLM APIにリクエストを送信する
 		res, err := requestPrompt(requestObject.Message, history)
