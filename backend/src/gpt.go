@@ -25,6 +25,7 @@ func messagesToJSON(msg []string) ([]Message, error) {
 			slog.Warn("Failed to unmarshal message: %s", err)
 			res[i] = Message{
 				Message: "Failed to unmarshal message",
+				Prompt: "Failed to unmarshal message",
 				Created: 0,
 			}
 		}
@@ -45,10 +46,11 @@ func buildPresetUserMessages() ([]Message, error) {
 	return messagesToJSON(presetMessages)
 }
 
-func savePresetMsg(msg string) (err error) {
+func savePresetMsg(prompt string,msg string) (err error) {
 	// オブジェクトデータの組み立て
 	msgObj := Message{
 		Message: msg,
+		Prompt: prompt,
 		Created: time.Now().Unix(),
 	}
 
@@ -61,6 +63,28 @@ func savePresetMsg(msg string) (err error) {
 	// redisに格納するデータを作成
 	insert_data := string(byte_data)
 	err = redis.LPush(KEY_GPT_WORD, insert_data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func savePromptMsg(msg string) (err error) {
+	// オブジェクトデータの組み立て
+	msgObj := PromptData{
+		Prompt: msg,
+		Created: time.Now().Unix(),
+	}
+
+	// Message型にMarshalする
+	byte_data, err := json.Marshal(msgObj)
+	if err != nil {
+		return err
+	}
+
+	// redisに格納するデータを作成
+	insert_data := string(byte_data)
+	err = redis.RPush(KEY_GPT_WORD, insert_data)
 	if err != nil {
 		return err
 	}

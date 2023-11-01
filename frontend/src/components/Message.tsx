@@ -5,6 +5,7 @@ import { Emotions } from '@/types.ts'
 interface Props {
   name: string
   message: string
+  prompt: string
   emotions: Emotions
 }
 
@@ -21,31 +22,51 @@ const initState = {
     disgust: 0,
     trust: 0,
   },
+  prompt: '',
 }
 export const Message = (state: Props = initState) => {
   return (
     <div className={'d-flex flex-column m-2'}>
-      <p
+      <div
         style={{
           borderRadius: '10px 10px 10px 10px',
           background: state.emotions
             ? colorChanger(state.emotions)
             : '#00acd166',
-          padding: '1em 1em',
-          fontSize: '1.2rem',
-          marginBottom: '0',
-          color: '#0a0a0a',
-          fontFamily: 'Reggae One',
-          overflowWrap: 'break-word',
         }}
       >
-        {state.message}
-      </p>
+        <p
+          style={{
+            padding: '1em 1em 0em 1em',
+            textAlign: 'left',
+            fontFamily: 'Reggae One',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            fontSize: '.8rem',
+          }}
+        >
+          {'> ' + state.prompt}
+        </p>
+        <p
+          style={{
+            padding: '0em 1em 1em 1em',
+            fontSize: '1.5rem',
+
+            marginBottom: '0',
+            color: '#0a0a0a',
+            fontFamily: 'Reggae One',
+            overflowWrap: 'break-word',
+          }}
+        >
+          {state.message}
+        </p>
+      </div>
       <div
         className={'d-flex flex-row justify-content-between'}
         style={style.sub}
       >
-        <p>{state.name}</p>
+        <p>{state.name ?? 'ChatTKB'}</p>
         <p>{format(new Date(), 'yyyy/MM/dd HH:mm', { locale: ja })}</p>
       </div>
     </div>

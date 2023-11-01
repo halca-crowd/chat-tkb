@@ -1,18 +1,8 @@
-import { useLayoutEffect, useRef, useState } from 'react'
 import { Message } from '@/components/Message'
-import {
-  ACTION_SEND_MASAKARI,
-  ACTION_RECV_MESSAGE,
-  ChatPropsType,
-} from '@/utils'
+import { ChatPropsType } from '@/utils'
 
 interface Props {
-  name: string
   messages: boolean | ChatPropsType[] | ((props: ChatPropsType) => void)
-  money: boolean
-  otherMoney: boolean
-  sendMessage: boolean | ChatPropsType[] | ((props: ChatPropsType) => void)
-  isThrowingMasakari: boolean
 }
 
 export interface Emotions {
@@ -32,53 +22,10 @@ interface ChatProps {
   name: string
   message: string
   emotions: Emotions
+  prompt: string
 }
 
-export const Chat = ({ name, messages, sendMessage }: Props) => {
-  const scrollBottomRef = useRef<HTMLDivElement>(null)
-  const [text, setText] = useState('')
-
-  const submitMessage = () => {
-    if (text.length === 0) return
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    sendMessage({
-      message: text,
-      name: name,
-      action: ACTION_SEND_MASAKARI,
-    })
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    sendMessage({
-      message: text,
-      name: name,
-      action: ACTION_RECV_MESSAGE,
-    })
-
-    setText('')
-  }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const handleInputChange = (e) => {
-    setText(e.target.value)
-  }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const handleButtonClick = () => {
-    submitMessage()
-  }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const handleOnKeydown = (event) => {
-    if (event.keyCode == 13) {
-      submitMessage()
-    }
-  }
-  useLayoutEffect(() => {
-    if (scrollBottomRef && scrollBottomRef.current) {
-      scrollBottomRef?.current?.scrollIntoView()
-    }
-  })
+export const Chat = ({ messages }: Props) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return (
@@ -97,12 +44,12 @@ export const Chat = ({ name, messages, sendMessage }: Props) => {
                   key={idx}
                   name={msg.name}
                   message={msg.message}
+                  prompt={msg.prompt}
                   emotions={msg.emotions}
                 />
               )
             })
           }
-          <div ref={scrollBottomRef}></div>
         </ul>
       </div>
       {/*<div className={'input-group mb-3'}>*/}
