@@ -178,6 +178,8 @@ func selectModel(model_name ModelName) string {
 	switch model_name {
 	case GPT3Dot5Turbo:
 		return openai.GPT3Dot5Turbo
+	case GPT3Dot5Turbo16k:
+		return openai.GPT3Dot5Turbo16K
 	case Davinci:
 		return openai.GPT3Davinci
 	default:

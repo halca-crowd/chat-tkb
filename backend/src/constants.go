@@ -32,14 +32,17 @@ const (
 type ModelName string // モデル名のEnum
 
 const (
-	GPT3Dot5Turbo ModelName = "gpt3.5-turbo" // GPT3.5 Turbo
-	Davinci       ModelName = "davinci"      // Davinci
+	GPT3Dot5Turbo    ModelName = "gpt-3.5-turbo"     // GPT3.5 Turbo
+	GPT3Dot5Turbo16k ModelName = "gpt-3.5-turbo-16k" // GPT3.5Trubo with 16k window
+	Davinci          ModelName = "davinci"           // Davinci
 )
 
 func strToModel(model string) (ModelName, error) {
 	switch model {
 	case string(GPT3Dot5Turbo):
 		return GPT3Dot5Turbo, nil
+	case string(GPT3Dot5Turbo16k):
+		return GPT3Dot5Turbo16k, nil
 	case string(Davinci):
 		return Davinci, nil
 	default:
