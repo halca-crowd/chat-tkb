@@ -60,7 +60,7 @@ func handler(s []byte) []byte {
 			return messageResponseFactory(requestObject.Message, "failed to fetch openai api")
 			// return errorResponseFactory("faile to send message", 503, "data is not json object")
 		}
-		err = savePresetMsg(res)
+		err = savePresetMsg(requestObject.Message, err.Error())
 		if err != nil {
 			slog.Info("failed to save preset message")
 		}

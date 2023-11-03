@@ -81,8 +81,8 @@ func getChatHistory(history_origin int64) ([]ChatMessage, error) {
 	return history, nil
 }
 
-func saveChatHistory(history []ChatMessage) (err error) {
-}
+// func saveChatHistory(history []ChatMessage) (err error) {
+// }
 
 func getChatHistoryOrigin() (int64, error) {
 	// キャッシュから会話ログの取り出し
@@ -119,9 +119,16 @@ func setChatHistoryOrigin(history_origin int64) (err error) {
 	return nil
 }
 
-func savePresetMsg(msg ChatMessage) (err error) {
+func savePresetMsg(prompt string,msg string) (err error) {
+	// オブジェクトデータの組み立て
+	msgObj := Message{
+		Message: msg,
+		Prompt: prompt,
+		Created: time.Now().Unix(),
+	}
+
 	// Message型にMarshalする
-	byte_data, err := json.Marshal(msg)
+	byte_data, err := json.Marshal(msgObj)
 	if err != nil {
 		return err
 	}
