@@ -1,6 +1,6 @@
+import { Emotions } from '@/types.ts'
 import { format } from 'date-fns'
 import ja from 'date-fns/locale/ja'
-import { Emotions } from '@/types.ts'
 
 interface Props {
   name: string
@@ -32,21 +32,21 @@ export const Message = (state: Props = initState) => {
           borderRadius: '10px 10px 10px 10px',
           background: state.emotions
             ? colorChanger(state.emotions)
-            : '#00acd166',
+            : '#69E3F3',
         }}
       >
         <p
           style={{
             padding: '1em 1em 0em 1em',
             textAlign: 'left',
-            fontFamily: 'Reggae One',
+            fontFamily: 'Kiwi Maru',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             fontSize: '.8rem',
           }}
         >
-          {'> ' + state.prompt}
+          {/* {'> ' + state.prompt} */}
         </p>
         <p
           style={{
@@ -55,11 +55,11 @@ export const Message = (state: Props = initState) => {
 
             marginBottom: '0',
             color: '#0a0a0a',
-            fontFamily: 'Reggae One',
+            fontFamily: 'Kiwi Maru',
             overflowWrap: 'break-word',
           }}
         >
-          {state.message}
+          {state.prompt}
         </p>
       </div>
       <div

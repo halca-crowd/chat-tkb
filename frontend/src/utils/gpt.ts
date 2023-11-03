@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
 import {
-  ACTION_RECV_MASAKARI,
-  ACTION_RECV_STATUS,
-  ACTION_RECV_MESSAGE,
-  randomStr,
-  BASE_API_URL,
   ACTION_FORCE_RESET,
+  ACTION_RECV_MASAKARI,
+  ACTION_RECV_MESSAGE,
+  ACTION_RECV_STATUS,
+  BASE_API_URL,
+  randomStr,
 } from '@/utils/constants'
+import { useEffect, useRef, useState } from 'react'
 
 interface Props {
   name: string
