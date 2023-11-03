@@ -1,7 +1,6 @@
 import { Emotions } from '@/types.ts'
 import { format } from 'date-fns'
 import ja from 'date-fns/locale/ja'
-import { useState } from 'react'
 
 interface Props {
   name: string
@@ -26,19 +25,11 @@ const initState = {
   prompt: '',
 }
 export const Message = (state: Props = initState) => {
-  // 状態管理のためのStateを用意
-  const [isDropdownOpen, setDrowdownOpen] = useState(false)
-
-  // プルダウンの表示状態をトグル
-  const toggleDropdown = () => {
-    setDrowdownOpen(!isDropdownOpen)
-  }
-
   return (
     <div className={'d-flex flex-column m-2'}>
       <div
         style={{
-          borderRadius: '10px 10px 0px 0px',
+          borderRadius: '10px 10px 10px 10px',
           background: state.emotions
             ? colorChanger(state.emotions)
             : '#69E3F3',
@@ -55,6 +46,7 @@ export const Message = (state: Props = initState) => {
             fontSize: '.8rem',
           }}
         >
+          {/* {'> ' + state.prompt} */}
         </p>
         <p
           style={{
@@ -69,56 +61,7 @@ export const Message = (state: Props = initState) => {
         >
           {state.prompt}
         </p>
-        <p
-          style={{
-            padding: '0em 1em 1em 1em',
-            fontSize: '1.5rem',
-
-            marginBottom: '0',
-            color: '#0a0a0a',
-            fontFamily: 'Kiwi Maru',
-            overflowWrap: 'break-word',
-          }}
-        >
-        </p>    
       </div>
-      <div className={'d-flex flex-column'}>
-        <div style={{
-          borderRadius: '0px 0px 10px 10px',
-          background: state.emotions
-            ? colorChanger(state.emotions)
-            : '#19C37D',
-        }}>
-         <button style={{
-          width: '100%',
-          color: '#fafafa',
-          border: 'none',
-          borderRadius: '0px 0px 10px 10px',
-          background: state.emotions
-            ? colorChanger(state.emotions)
-            : '#19C37D',
-         }} onClick={toggleDropdown}>{isDropdownOpen ? "✖ ChatTKBの回答を閉じる" : "▼ ChatTKBの回答を聞く！"} </button>   
-        {isDropdownOpen && (
-            <div>
-              <p style={{
-                padding: '0em 1em 0em 1em',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                fontSize: '1.5rem',
-                color: '#fafafa',
-                fontFamily: 'Kiwi Maru',
-
-                display: 'flex',
-                flexDirection: 'column',
-                textAlign: 'center',
-                alignItems: 'flex-center', // テキストを左揃え
-              }}>{state.message}</p>
-            </div>
-          )}
-        </div>
-      </div>
-
       <div
         className={'d-flex flex-row justify-content-between'}
         style={style.sub}
