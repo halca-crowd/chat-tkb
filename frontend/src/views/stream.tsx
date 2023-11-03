@@ -1,9 +1,9 @@
 /* eslint-disable */
 // @ts-nocheck
-import { useState } from 'react'
-import { ACTION_RECV_MESSAGE, BASE_API_URL, ChatService } from '@/utils'
-import { css } from '@emotion/react'
 import { Chat } from '@/containers/Chat.tsx'
+import { ACTION_RECV_MESSAGE, ChatService } from '@/utils'
+import { css } from '@emotion/react'
+import { useState } from 'react'
 
 export function Stream() {
   const [name, setName] = useState('anonymous')
@@ -11,6 +11,7 @@ export function Stream() {
   const [event, setEvent] = useState(true)
   const [messages, sendMessage, status, isThrowingMasakari] = ChatService({
     name: 'ChatTKB',
+    prompt: `ようこそ、${name}さん`,
     message: `ようこそ、${name}さん`,
     action: ACTION_RECV_MESSAGE,
   })
