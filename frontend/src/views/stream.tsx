@@ -11,7 +11,7 @@ export function Stream() {
   const [event, setEvent] = useState(true)
   const [messages, sendMessage, status, isThrowingMasakari] = ChatService({
     name: 'ChatTKB',
-    prompt: `ようこそ、${name}さん`,
+    prompt: `こんにちは`,
     message: `ようこそ、${name}さん`,
     action: ACTION_RECV_MESSAGE,
   })
