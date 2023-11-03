@@ -81,9 +81,6 @@ func getChatHistory(history_origin int64) ([]ChatMessage, error) {
 	return history, nil
 }
 
-func saveChatHistory(history []ChatMessage) (err error) {
-}
-
 func getChatHistoryOrigin() (int64, error) {
 	// キャッシュから会話ログの取り出し
 	history_origin, err := redis.LRange(KEY_CHAT_HISTORY_ORIGIN, 0, 0)

@@ -139,7 +139,7 @@ func llm_api(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	err = savePresetMsg(prompt,result)
+	// err = savePresetMsg(result)
 	if err != nil {
 		status := 500
 		logger.LoggingHTTPError(status, err)
