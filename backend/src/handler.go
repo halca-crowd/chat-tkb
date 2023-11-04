@@ -69,7 +69,7 @@ func handler(s []byte) []byte {
 		if err != nil {
 			slog.Info("failed to save preset message")
 		}
-		return messageResponseFactory(requestObject.Message, res.Content.Message)
+		return messageResponseFactory(requestObject.Message, requestObject.Message)
 	case requestObject.Action == ACTION_RESET_CONTEXT:
 		// リクエストのMessageをint64に変換。エラーがあればエラーレスポンスを返す
 		history_origin_int, err := strconv.ParseInt(requestObject.Message, 10, 64)
