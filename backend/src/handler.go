@@ -124,6 +124,7 @@ func messageResponseFactory(inputMsg string, outputMsg string) []byte {
 		Action:  RES_GPT_MESSAGE,
 		Message: outputMsg,
 		Created: current_time,
+		Prompt:  inputMsg,
 	}
 	res, err := json.Marshal(resObj)
 	if err != nil {
