@@ -39,17 +39,17 @@ func handler(s []byte) []byte {
 		return r
 
 	case requestObject.Action == ACTION_CHAT_MESSAGE:
-		hisotry_origin_int, err := getChatHistoryOrigin()
+		// hisotry_origin_int, err := getChatHistoryOrigin()
 		history := []ChatMessage{}
-		if err != nil {
-			slog.Info(err.Error())
-		} else {
-			// キャッシュから会話ログの取り出し
-			history, err = getChatHistory(hisotry_origin_int)
-			if err != nil {
-				slog.Info(err.Error())
-			}
+		item := ChatMessage{
+			Role: "user",
+			Content: Message{
+				Message: "こんにちは",
+				Created: time.Now().Unix(),
+				Prompt:  "こんにちは",
+			},
 		}
+		history = append(history, item)
 		// LLM APIにリクエストを送信する
 		// res, err := requestPrompt(requestObject.Message, history)
 		res, err := requestPrompt(requestObject.Message, history)
