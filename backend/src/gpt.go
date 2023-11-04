@@ -159,7 +159,6 @@ func savePromptMsg(msg string) (err error) {
 
 // LLM APIのコントローラ
 func requestPrompt(msg string, history []ChatMessage) (ChatMessage, error) {
-
 	model := "gpt-3.5-turbo-16k"
 	prompt := msg
 

@@ -50,10 +50,12 @@ func handler(s []byte) []byte {
 				slog.Info(err.Error())
 			}
 		}
-
 		// LLM APIにリクエストを送信する
+		// res, err := requestPrompt(requestObject.Message, history)
 		res, err := requestPrompt(requestObject.Message, history)
-
+		
+		log.Println(history)
+		err = nil
 		if err != nil {
 			slog.Error(err.Error())
 			_ = savePresetMsg(requestObject.Message, "failed to fetch openai api")
