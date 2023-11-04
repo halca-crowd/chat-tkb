@@ -73,7 +73,7 @@ export const ChatService = (props: Props) => {
             action: ACTION_RECV_MESSAGE,
           }
         })
-        // setMessages(mappedData)
+        setMessages([])
       })
       .catch((error) => {
         console.error(

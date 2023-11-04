@@ -53,12 +53,11 @@ func handler(s []byte) []byte {
 		// LLM APIにリクエストを送信する
 		// res, err := requestPrompt(requestObject.Message, history)
 		res, err := requestPrompt(requestObject.Message, history)
-		
+
 		log.Println(history)
 		err = nil
 		if err != nil {
 			slog.Error(err.Error())
-			_ = savePresetMsg(requestObject.Message, "failed to fetch openai api")
 			return messageResponseFactory(requestObject.Message, "failed to fetch openai api")
 			// return errorResponseFactory("faile to send message", 503, "data is not json object")
 		}
